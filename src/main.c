@@ -3,7 +3,7 @@
 #include <sys/time.h>
 
 #include "../include/interpolation.h"
-// #include "likwid.h"
+#include "likwid.h"
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
@@ -33,22 +33,22 @@ int main(int argc, char **args) {
     exit(1);
   }
 
-  // LIKWID_MARKER_INIT;
+  LIKWID_MARKER_INIT;
 
   // Calculate
-  // LIKWID_MARKER_START("Lagrange");
+  LIKWID_MARKER_START("Lagrange");
   gettimeofday(&start1, NULL);
   double lagrangeSolution = lagrangeInterpolation(pairs, size, xe);
   gettimeofday(&end1, NULL);
-  // LIKWID_MARKER_STOP("Lagrange");
+  LIKWID_MARKER_STOP("Lagrange");
 
-  // LIKWID_MARKER_START("Newton");
+  LIKWID_MARKER_START("Newton");
   gettimeofday(&start2, NULL);
   double newtonSolution = newtonInterpolation(pairs, size, xe);
   gettimeofday(&end2, NULL);
-  // LIKWID_MARKER_STOP("Newton");
+  LIKWID_MARKER_STOP("Newton");
 
-  // LIKWID_MARKER_CLOSE;
+  LIKWID_MARKER_CLOSE;
 
   // Show
   printf("%lf\n", lagrangeSolution);
