@@ -3,7 +3,10 @@
 #include <sys/time.h>
 
 #include "../include/interpolation.h"
-// #include <likwid.h>
+// #include "likwid.h"
+
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 int main(int argc, char **args) {
   // Arrange
@@ -18,33 +21,40 @@ int main(int argc, char **args) {
 
   readPairs(pairs, size);
 
+  int smallest = pairs[0].first;
+  int greatest = pairs[0].first;
+  for (int i = 1; i < size; i++) {
+    smallest = MIN(smallest, pairs[i].first);
+    greatest = MAX(smallest, pairs[i].first);
+  }
+
+  if (xe < smallest || xe > greatest) {
+    fprintf(stderr, "O ponto deve pertencer a tabela de pontos fornecida!\n");
+    exit(1);
+  }
+
   // LIKWID_MARKER_INIT;
 
   // Calculate
-  // LIKWID_MARKER_START("Sol_1");
+  // LIKWID_MARKER_START("Lagrange");
   gettimeofday(&start1, NULL);
   double lagrangeSolution = lagrangeInterpolation(pairs, size, xe);
   gettimeofday(&end1, NULL);
-  // LIKWID_MARKER_STOP("Sol_1");
+  // LIKWID_MARKER_STOP("Lagrange");
 
-  // LIKWID_MARKER_START("Sol_2");
+  // LIKWID_MARKER_START("Newton");
   gettimeofday(&start2, NULL);
   double newtonSolution = newtonInterpolation(pairs, size, xe);
   gettimeofday(&end2, NULL);
-  // LIKWID_MARKER_STOP("Sol_2");
+  // LIKWID_MARKER_STOP("Newton");
 
   // LIKWID_MARKER_CLOSE;
 
   // Show
-  printf("\n");
-  printf("Lagrange: %lf\n", lagrangeSolution);
+  printf("%lf\n", lagrangeSolution);
+  printf("%lf\n", newtonSolution);
   printTime(start1, end1);
-  printf("\n");
-
-  printf("\n");
-  printf("Newton: %lf\n", newtonSolution);
   printTime(start2, end2);
-  printf("\n");
 
   // Free
   freePairsVector(pairs);

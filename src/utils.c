@@ -10,5 +10,5 @@ void printTime(struct timeval start, struct timeval end) {
 
   long mtime = ((seconds * 1000) + useconds);
 
-  printf("Tempo: %ld milisegundos\n", mtime);
+  printf("%ld\n", mtime);
 }
